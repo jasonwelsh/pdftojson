@@ -18,23 +18,16 @@ jobs:
       with:
         python-version: '3.9'
     
-    - name: Install system dependencies
+    - name: Install dependencies
       run: |
-        brew install tesseract
-        brew install poppler
-    
-    - name: Install Python dependencies
-      run: |
+        brew install tesseract poppler
         python -m pip install --upgrade pip
         pip install pdfplumber pytesseract pdf2image nltk Pillow pyinstaller
-    
-    - name: Download NLTK data
-      run: |
         python -c "import nltk; nltk.download('punkt')"
     
     - name: Build executable
       run: |
-        pyinstaller --onefile --add-binary '/usr/local/bin/tesseract:.' --add-binary '/usr/local/lib/libtesseract.dylib:.' pdftojson
+        pyinstaller --onefile pdftojson
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
