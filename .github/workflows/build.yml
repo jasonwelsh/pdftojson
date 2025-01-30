@@ -20,18 +20,12 @@ jobs:
     
     - name: Install dependencies
       run: |
-        brew install tesseract poppler
         python -m pip install --upgrade pip
-        pip install pdfplumber pytesseract pdf2image nltk Pillow pyinstaller
-        python -c "import nltk; nltk.download('punkt')"
+        pip install pdfplumber pyinstaller
     
     - name: Build executable
       run: |
-        pyinstaller --clean --onefile --name pdftojson \
-          --add-data "/usr/local/bin/tesseract:." \
-          --add-data "/usr/local/lib/libtesseract.dylib:." \
-          --add-data "$(python -c 'import nltk; print(nltk.data.path[0])')/tokenizers/punkt:nltk_data/tokenizers/punkt" \
-          pdftojson
+        pyinstaller --clean --onefile --name pdftojson pdftojson
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
