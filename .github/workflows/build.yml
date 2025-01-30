@@ -27,7 +27,11 @@ jobs:
     
     - name: Build executable
       run: |
-        pyinstaller --onefile pdftojson
+        pyinstaller --clean --onefile --name pdftojson \
+          --add-data "/usr/local/bin/tesseract:." \
+          --add-data "/usr/local/lib/libtesseract.dylib:." \
+          --add-data "$(python -c 'import nltk; print(nltk.data.path[0])')/tokenizers/punkt:nltk_data/tokenizers/punkt" \
+          pdftojson
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
